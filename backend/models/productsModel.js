@@ -10,7 +10,7 @@ const productSchema = mongoose.Schema({
         required: [true, 'Please type up the products description']
     },
     price: {
-        type: Decimal128,
+        type: mongoose.Types.Decimal128,
         required: [true, 'Please type up the products description']
     },
     amount: {
@@ -26,4 +26,4 @@ const productSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Product', userSchema)
+module.exports = mongoose.model('Product', productSchema)
