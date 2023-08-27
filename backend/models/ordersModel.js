@@ -7,17 +7,12 @@ const orderSchema = mongoose.Schema({
         ref: 'User'
     },
     products: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Product'
+        type: String,
+        required: true
     },
     amount: {
         type: Number,
         require: [true, 'Please type up the amount of products']
-    },
-    subtotal: {
-        type: mongoose.Types.Decimal128,
-        require: true
     },
     delivered: {
         type: Boolean,
