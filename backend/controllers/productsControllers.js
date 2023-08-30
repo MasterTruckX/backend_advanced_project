@@ -1,6 +1,13 @@
 const asyncHandler = require('express-async-handler')
 const Product = require('../models/productsModel')
 
+function validateProduct(product){
+    if(!product){
+        res.status(404)
+        throw new Error ('Product not found.')
+    }
+}
+
 const getProducts = asyncHandler(async (req,res) => {
     if(req.user.admin !== true){
         res.status(401)
@@ -11,12 +18,14 @@ const getProducts = asyncHandler(async (req,res) => {
 })
 
 const getByIdProducts = asyncHandler(async (req,res) => {
+    const product = await Product.findById(req.params.id)
+    validateProduct(product)
     if(req.user.admin !== true){
         res.status(401)
         throw new Error('Unauthorized. No admin user was found.')
+    }else {
+        res.status(200).json(product)
     }
-    const product = await Product.findById(req.params.id)
-    res.status(200).json(product)
 })
 
 const setProducts = asyncHandler(async (req, res) => {
@@ -40,10 +49,7 @@ const setProducts = asyncHandler(async (req, res) => {
 const updateProducts = asyncHandler (async (req, res) => {
 
     const product = await Product.findById(req.params.id)
-    if(!product){
-        res.status(404)
-        throw new Error ('Product not found.')
-    }
+    validateProduct(product)
     
     if(req.user.admin !== true) {
         res.status(401)
@@ -57,10 +63,7 @@ const updateProducts = asyncHandler (async (req, res) => {
 const deleteProducts = asyncHandler (async (req, res) => {
 
     const product = await Product.findById(req.params.id)
-    if(!product){
-        res.status(404)
-        throw new Error ('Product not found.')
-    }
+    validateProduct(product)
 
     if(req.user.admin !== true) {
         res.status(401)
